@@ -1,0 +1,37 @@
+<html>
+<head>
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://code.highcharts.com/stock/highstock.src.js"></script>
+  <script src="drawChart.js"></script>
+  <style>
+    #container {
+      max-height: 800px;
+      min-height: 75vh;
+    }
+  </style>
+</head>
+<body>
+  <div>Symbol: <input type="text" id="stock"/></div>
+  <div id="container" class="chart"></div>
+  <script>
+
+    let fetchData = (symbol) => {
+      let url = `http://localhost:3000/stocks/${symbol}`;
+      $.get(url, (data) => drawChart(symbol, data));
+    }
+
+    $('#stock').on('keypress', function (e) {
+      if(e.which === 13){
+        let symbol = $(this).val().trim();
+        if (symbol) {
+          fetchData(symbol);
+          $(this).val(''); // clear input
+        }
+      }
+    });
+
+    fetchData('jnj');
+
+  </script>
+</body>
+</html>
